@@ -25,8 +25,7 @@ loginRouter.post('/', async (request, response) => {
   const likes = await db.getAllLikesOfUser(user.userId)
 
   response
-    .status(200)
-    .send({ token, userId: user.userId, username: user.username, name: user.name, actions: { likes } })
+    .json({ token, userId: user.userId, username: user.username, name: user.name, actions: { likes } })
 })
 
 module.exports = loginRouter
