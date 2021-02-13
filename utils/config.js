@@ -3,7 +3,7 @@ require('dotenv').config()
 const PORT = process.env.PORT || 3001
 let DATABASE_FILE = process.env.DATABASE_FILE
 
-if (process.env.NODE_ENV === 'testing') {
+if (process.env.NODE_ENV === 'test') {
   DATABASE_FILE = process.env.TESTING_DATABASE_FILE
 }
 

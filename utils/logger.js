@@ -5,8 +5,10 @@ const info = (...params) => {
 }
 
 const error = (...params) => {
-  console.error('ERROR:', ...params)
-  console.error('---')
+  if (process.env.NODE_ENV !== 'test') {
+    console.error('ERROR:', ...params)
+    console.error('---')
+  }
 }
 
 module.exports = {
