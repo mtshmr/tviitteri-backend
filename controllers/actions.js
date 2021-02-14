@@ -9,7 +9,7 @@ actionsRouter.get('/', middleware.authHandler, async (request, response) => {
 
   const likes = await db.getAllLikesOfUser(userId)
 
-  response.json({ actions: { likes } })
+  response.json({ actions: likes })
 })
 
 actionsRouter.post('/', middleware.authHandler, async (request, response) => {

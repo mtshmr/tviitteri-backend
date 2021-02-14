@@ -24,6 +24,11 @@ app.use('/api/users', usersRouter)
 app.use('/api/login', loginRouter)
 app.use('/api/actions', actionsRouter)
 
+if (process.env.NODE_ENV === 'test') {
+  const testsRouter = require('./controllers/tests')
+  app.use('/api/tests', testsRouter)
+}
+
 app.use(express.static('build'))
 
 app.get('*', (req, res) => {

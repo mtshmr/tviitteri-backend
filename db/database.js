@@ -14,11 +14,50 @@ const openDb = async (filename) => {
   logger.info(`Opened database at ${filename}`)
 }
 
-// TVIIT STRUC:
-//   - id
-//   - userId
-//   - content
-//   - postDate
+const closeDb = async () => {
+  await db.close()
+  db = null
+
+  logger.info('Closed the database')
+}
+
+const createTablesDb = async () => {
+  await db.exec(`CREATE TABLE "actions" (
+    "id"	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+    "userId"	INTEGER NOT NULL,
+    "actionType"	TEXT NOT NULL,
+    "targetTviitId"	INTEGER NOT NULL,
+    "timestamp"	TEXT NOT NULL
+  )`)
+  await db.exec(`CREATE TABLE "tviits" (
+    "id"	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+    "userId"	INTEGER NOT NULL,
+    "content"	TEXT NOT NULL,
+    "postDate"	TEXT NOT NULL,
+    "responseTo"	INTEGER,
+    "likes"	INTEGER DEFAULT 0
+  )`)
+  await db.exec(`CREATE TABLE "users" (
+    "userId"	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+    "username"	TEXT NOT NULL UNIQUE,
+    "name"	TEXT,
+    "bio"	TEXT,
+    "passwordHash"	TEXT NOT NULL
+  )`)
+}
+
+/**
+ * Deletes all entries in the given table of the database.
+ *
+ * Meant only for emptying the database tables during testing!
+ *
+ * @param {string} tableName The table to be emptied.
+ */
+const deleteEverythingInTableDb = async (tableName) => {
+  if (process.env.NODE_ENV === 'test') {
+    await db.exec(`DELETE FROM ${tableName}`)
+  }
+}
 
 const getNewestTviits = async (limit, offset) => {
   const sql = `SELECT * 
@@ -365,6 +404,9 @@ const checkForDuplicateAction = async (action) => {
 
 module.exports = {
   openDb,
+  closeDb,
+  createTablesDb,
+  deleteEverythingInTableDb,
   getNewestTviits,
   getTviit,
   addTviit,
