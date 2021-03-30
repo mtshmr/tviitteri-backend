@@ -211,7 +211,16 @@ const getUser = async (username, userId = null) => {
   const user = await db.get(sql, sqlParam)
 
   logger.info('getUser')
-  logger.info(user)
+
+  if (user) {
+    // Don't log the passwordHash for security reasons
+    // eslint-disable-next-line no-unused-vars
+    const { passwordHash, ...rest } = user
+    logger.info(rest)
+  } else {
+    logger.info(user)
+  }
+
   logger.info('---')
 
   return user

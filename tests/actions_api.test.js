@@ -169,8 +169,8 @@ describe('testing liking', () => {
       .expect(200)
       .expect('Content-Type', /application\/json/)
 
-    expect(getResponse.body.actions).toHaveLength(1)
-    expect(getResponse.body.actions).toContain(id)
+    expect(getResponse.body.actions.likes).toHaveLength(1)
+    expect(getResponse.body.actions.likes).toContain(id)
   })
 
   test('deleting own like succeeds', async () => {
@@ -218,7 +218,7 @@ describe('testing liking', () => {
       .expect(200)
       .expect('Content-Type', /application\/json/)
 
-    expect(getResponse.body.actions).toHaveLength(1)
+    expect(getResponse.body.actions.likes).toHaveLength(1)
 
     await api
       .delete('/api/actions')
@@ -233,7 +233,7 @@ describe('testing liking', () => {
       .expect(200)
       .expect('Content-Type', /application\/json/)
 
-    expect(getResponse2.body.actions).toHaveLength(0)
+    expect(getResponse2.body.actions.likes).toHaveLength(0)
   })
 })
 

@@ -47,6 +47,12 @@ const errorHandler = (error, request, response, next) => {
     })
   }
 
+  if (error.code === 'LIMIT_FILE_SIZE') {
+    return response.status(400).json({
+      error: `max file size for uploads is ${config.MAX_UPLOAD_FILE_SIZE} bytes`
+    })
+  }
+
   switch (error.message) {
   case 'TVIIT_NOT_FOUND':
     return response.status(404).json({
@@ -160,6 +166,18 @@ const errorHandler = (error, request, response, next) => {
   case 'USERS_NAME_TOO_LONG':
     return response.status(400).json({
       error: `max length of name is ${config.MAX_NAME_LENGTH}`
+    })
+  case 'UPLOAD_WRONG_FILE_FORMAT':
+    return response.status(400).json({
+      error: `allowed file formats are: ${config.ALLOWED_FILE_TYPES.join(', ')}`
+    })
+  case 'UPLOAD_NO_FILE':
+    return response.status(400).json({
+      error: 'no file included in upload'
+    })
+  case 'AVATAR_NOT_FOUND':
+    return response.status(404).json({
+      error: 'avatar with given filename not found'
     })
   }
 
